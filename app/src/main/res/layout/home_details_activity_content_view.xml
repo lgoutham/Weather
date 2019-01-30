@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/home_details_activity_date"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/global_default_dimen_10px"
+        android:text="@string/app_name"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/global_default_text_25px"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/home_details_activity_temp_max"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/global_default_dimen_10px"
+        android:text="@string/app_name"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/global_default_text_41px"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_details_activity_date" />
+
+    <TextView
+        android:id="@+id/home_details_activity_temp_min"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/global_default_dimen_10px"
+        android:text="@string/app_name"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/global_default_text_30px"
+        app:layout_constraintBaseline_toBaselineOf="@+id/home_details_activity_sky_status"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/home_details_activity_image_view"
+        android:layout_width="@dimen/global_default_dimen_180px"
+        android:layout_height="@dimen/global_default_dimen_180px"
+        android:layout_marginEnd="@dimen/global_default_dimen_10px"
+        android:layout_marginLeft="@dimen/global_default_dimen_10px"
+        android:layout_marginStart="@dimen/global_default_dimen_10px"
+        android:contentDescription="@string/image_description"
+        android:scaleType="fitXY"
+        android:src="@drawable/sun"
+        app:layout_constraintLeft_toRightOf="@+id/home_details_activity_temp_max"
+        app:layout_constraintTop_toTopOf="@+id/home_details_activity_temp_max" />
+
+    <TextView
+        android:id="@+id/home_details_activity_sky_status"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/global_default_dimen_10px"
+        android:gravity="center"
+        android:text="@string/app_name"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/global_default_text_25px"
+        app:layout_constraintLeft_toLeftOf="@+id/home_details_activity_image_view"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_details_activity_image_view" />
+
+    <TextView
+        android:id="@+id/home_details_activity_humidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/global_default_dimen_10px"
+        android:gravity="left|start"
+        android:text="@string/app_name"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/global_default_text_30px"
+        tools:layout_editor_absoluteX="10dp"
+        tools:layout_editor_absoluteY="281dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/global_default_dimen_10px"
+        android:text="TextView"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/global_default_text_30px"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_details_activity_humidity" />
+
+</android.support.constraint.ConstraintLayout>

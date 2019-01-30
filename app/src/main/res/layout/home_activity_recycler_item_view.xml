@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/global_default_dimen_100px"
+    android:layout_marginBottom="@dimen/global_default_dimen_5px"
+    android:layout_marginEnd="@dimen/global_default_dimen_10px"
+    android:layout_marginStart="@dimen/global_default_dimen_10px"
+    android:layout_marginTop="@dimen/global_default_dimen_5px"
+    app:cardCornerRadius="@dimen/global_default_dimen_5px">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/global_default_dimen_15px"
+        android:layout_marginBottom="@dimen/global_default_dimen_15px"
+        android:layout_marginEnd="@dimen/global_default_dimen_12px"
+        android:layout_marginStart="@dimen/global_default_dimen_12px">
+
+        <ImageView
+            android:id="@+id/home_activity_recycler_item_icon"
+            android:layout_width="@dimen/global_default_dimen_40px"
+            android:layout_height="@dimen/global_default_dimen_40px"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/global_default_dimen_12px"
+            android:contentDescription="@string/image_description"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:id="@+id/home_activity_recycler_item_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@id/home_activity_recycler_item_icon"
+            android:text="@string/app_name"
+            android:textSize="@dimen/global_default_text_25px"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/home_activity_recycler_item_sky"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@id/home_activity_recycler_item_icon"
+            android:text="@string/app_name"
+            android:textSize="@dimen/global_default_text_25px" />
+
+        <TextView
+            android:id="@+id/home_activity_recycler_item_max_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignBaseline="@id/home_activity_recycler_item_date"
+            android:text="@string/app_name"
+            android:textSize="@dimen/global_default_text_25px" />
+
+        <TextView
+            android:id="@+id/home_activity_recycler_item_min_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:text="@string/app_name"
+            android:textSize="@dimen/global_default_text_25px" />
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

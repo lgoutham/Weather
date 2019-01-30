@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:defaultValue="@string/bangalore"
+        android:key="@string/settings_place"
+        android:title="@string/search_a_place" />
+
+    <ListPreference
+        android:defaultValue="@string/settings_temp_celsius"
+        android:entries="@array/settings_temp_keys"
+        android:entryValues="@array/settings_temp_values"
+        android:key="@string/settings_temp_unit"
+        android:title="@string/settings_temp_title" />
+
+</PreferenceScreen>

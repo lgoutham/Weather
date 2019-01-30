@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="settings_temp_keys">
+        <item>@string/settings_temp_celsius</item>
+        <item>@string/settings_temp_fahrenheit</item>
+    </array>
+
+    <array name="settings_temp_values">
+        <item>@string/settings_temp_celsius_value</item>
+        <item>@string/settings_temp_fahrenheit_vlaue</item>
+    </array>
+</resources>

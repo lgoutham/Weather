@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">Sunshine</string>
+    <string name="image_description">Description</string>
+    <string name="lbl_Ok">OK</string>
+    <string name="lbl_Cancel">Cancel</string>
+    <string name="lbl_Enable_Gps">Enable Gps</string>
+    <string name="lbl_Retry">Retry</string>
+    <string name="open_weather_map_key">e1268efe6cf65ff2880433f5e1ee78fc</string>
+
+    <!-- ISplashView -->
+    <string name="lbl_Skip">Skip !</string>
+    <string name="lbl_Next">Next &gt;</string>
+    <string name="lbl_Explore">Explore</string>
+
+    <!---->
+    <string name="no_gps_title">Location service is not Enabled.</string>
+    <string name="no_network_title">No Network</string>
+    <string name="no_network_message">Device should be in online mode to check weather, \nTry Again.</string>
+    <string name="app_detail">Detail</string>
+    <string name="permission_location_rationale">Location permission is needed to show weather at current location.</string>
+    <string name="location_permision_available">Location Permission has been granted. Weather can now be updated.</string>
+    <string name="permissions_not_granted">Permissions were not granted.</string>
+    <string name="settings">Settings</string>
+
+    <!--Settings-->
+    <string name="settings_place" translatable="false">settings_place</string>
+    <string name="bangalore">Bangalore</string>
+    <string name="xyz">xyz</string>
+    <string name="search_a_place">Search a place</string>
+
+    <string name="settings_check_preference_key" translatable="false">check_box_preference</string>
+    <string name="settings_check_preference_title">Show Bass</string>
+
+    <string name="settings_temp_unit" translatable="false">settings_temp_unit</string>
+    <string name="settings_temp_title">Temperature Units</string>
+
+    <string name="settings_temp_celsius">Celsius</string>
+    <string name="settings_temp_fahrenheit">Fahrenheit</string>
+
+    <string name="settings_temp_celsius_value" translatable="false">celsius</string>
+    <string name="settings_temp_fahrenheit_vlaue" translatable="false">fahrenheit</string>
+</resources>
