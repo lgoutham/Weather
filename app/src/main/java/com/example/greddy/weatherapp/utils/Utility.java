@@ -30,7 +30,7 @@ public class Utility {
     /*Weather URL's*/
     public static String BASE_URL = "http://api.openweathermap.org/data/2.5/weather?";
     public static String FORECAST_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?q=";
-    public static String APPID = "&appid=e1268efe6cf65ff2880433f5e1ee78fc";
+    public static String APPID = "Your Key";
     public static String UNITS = "&units=";
     public static String METRIC_UNITS = "metric";
     public static String IMPERIAL_UNITS = "imperial";
