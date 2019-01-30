@@ -51,9 +51,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, HomeDetailsActivity.class);
+                /*Intent intent = new Intent(mContext, HomeDetailsActivity.class);
                 intent.putExtra(POSITION, mPosition);
-                mContext.startActivity(intent);
+                mContext.startActivity(intent);*/
             }
         });
         return new HomeViewHolder(view);
