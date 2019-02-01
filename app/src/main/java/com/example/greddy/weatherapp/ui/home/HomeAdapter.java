@@ -24,13 +24,11 @@ import java.util.Locale;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder> {
 
-    public static String POSITION = "POSITION";
-    public static String WEATHER_MODEL = "WEATHER_MODEL";
+    static String POSITION = "POSITION";
 
     private Context mContext;
     private List<WeatherForecastDayModel> mWeatherList;
     private String mSettingsTempValue;
-    private int mPosition;
 
     public HomeAdapter(Context context) {
         mContext = context;
@@ -59,11 +57,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull HomeViewHolder holder, int position) {
-        mPosition = position + 1;
+        int mPosition = position + 1;
         if (mPosition > getItemCount()) {
             return;
         }
-        Date date = new Date(mWeatherList.get(mPosition).getDate());
+        Date date = new Date(mWeatherList.get(mPosition).getDate() * 1000);
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String dateString = format.format(date);
         holder.mDate.setText(dateString);

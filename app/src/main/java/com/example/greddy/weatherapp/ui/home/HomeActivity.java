@@ -38,6 +38,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.greddy.weatherapp.R;
 import com.example.greddy.weatherapp.model.forecast.WeatherForecastModel;
+import com.example.greddy.weatherapp.model.latlon.LatLonModel;
 import com.example.greddy.weatherapp.ui.settings.SettingsActivity;
 import com.example.greddy.weatherapp.utils.JsonHelper;
 import com.example.greddy.weatherapp.utils.Utility;
@@ -53,8 +54,6 @@ import static com.example.greddy.weatherapp.utils.Utility.COUNT;
 import static com.example.greddy.weatherapp.utils.Utility.IMPERIAL_UNITS;
 import static com.example.greddy.weatherapp.utils.Utility.METRIC_UNITS;
 
-;
-
 /**
  * Created by greddy on 4/2/2017.
  */
@@ -65,12 +64,11 @@ public class HomeActivity extends AppCompatActivity
         GoogleApiClient.OnConnectionFailedListener,
         ActivityCompat.OnRequestPermissionsResultCallback {
 
-    public static final int REQUEST_PERMISSION = 0x6;
-    public static final int SETTINGS_REQUEST_CODE = 1;
+    private static final int REQUEST_PERMISSION = 0x6;
+    private static final int SETTINGS_REQUEST_CODE = 1;
 
     private static final String TAG = "HomeActivity";
 
-    private boolean isGpsEnabled = false;
     private LocationManager mLocationManager;
     private GoogleApiClient mGoogleApiClient;
     private Location mPresentLocation;
@@ -102,14 +100,8 @@ public class HomeActivity extends AppCompatActivity
         mRequestQueue = Volley.newRequestQueue(this);
         setUpSettingsPreferences();
         loadUi();
-//        buildGoogleApiClient();
-//        mGoogleApiClient.connect();
-        if (isDeviceOnline()) {
-//            checkLocation();
-            requestForForecastData();
-        } else {
-            ShowNoNetworkDialog();
-        }
+        buildGoogleApiClient();
+        mGoogleApiClient.connect();
     }
 
     private void setUpSettingsPreferences() {
@@ -122,22 +114,22 @@ public class HomeActivity extends AppCompatActivity
     private void loadUi() {
         setContentView(R.layout.home_activity_content_view);
         mLayout = findViewById(R.id.home_activity_content_coordinatorLayout);
-        mProgressBar = (RelativeLayout) findViewById(R.id.home_activity_content_progressbar);
-        mPresentDataLayout = (LinearLayout) findViewById(R.id.home_activity_present_data);
+        mProgressBar = findViewById(R.id.home_activity_content_progressbar);
+        mPresentDataLayout = findViewById(R.id.home_activity_present_data);
         mPresentDataLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, HomeDetailsActivity.class);
-                startActivity(intent);
+                /*Intent intent = new Intent(HomeActivity.this, HomeDetailsActivity.class);
+                startActivity(intent);*/
             }
         });
-        mDate = (TextView) findViewById(R.id.home_activity_date);
-        mMaxTemp = (TextView) findViewById(R.id.home_activity_temp_max);
-        mMinTemp = (TextView) findViewById(R.id.home_activity_temp_min);
-        mSkyStatus = (TextView) findViewById(R.id.home_activity_sky_status);
-        mPlace = (TextView) findViewById(R.id.home_activity_place);
-        mIcon = (ImageView) findViewById(R.id.home_activity_image_view);
-        mRecyclerView = (RecyclerView) findViewById(R.id.home_activity_content_recycler_view);
+        mDate = findViewById(R.id.home_activity_date);
+        mMaxTemp = findViewById(R.id.home_activity_temp_max);
+        mMinTemp = findViewById(R.id.home_activity_temp_min);
+        mSkyStatus = findViewById(R.id.home_activity_sky_status);
+        mPlace = findViewById(R.id.home_activity_place);
+        mIcon = findViewById(R.id.home_activity_image_view);
+        mRecyclerView = findViewById(R.id.home_activity_content_recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
@@ -153,7 +145,7 @@ public class HomeActivity extends AppCompatActivity
                 .build();
     }
 
-    public boolean isDeviceOnline() {
+    private boolean isDeviceOnline() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         boolean isDeviceOnline = networkInfo != null && networkInfo.isConnectedOrConnecting();
@@ -171,7 +163,7 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void checkLocation() {
-        isGpsEnabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        boolean isGpsEnabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         if (!isGpsEnabled)
             ShowGpsDialog();
         else
@@ -180,13 +172,13 @@ public class HomeActivity extends AppCompatActivity
 
     private void prepareUrlAndRequestData() {
         if (mPresentLocation != null) {
-            String url = prepareUrl(mPresentLocation.getLatitude(), mPresentLocation.getLongitude());
+            String url = prepareLatLonUrl(mPresentLocation.getLatitude(), mPresentLocation.getLongitude());
             Log.d(TAG, "checkLocation: url" + url);
             requestForLatLngData(url);
         }
     }
 
-    private String prepareUrl(double latitude, double longitude) {
+    private String prepareLatLonUrl(double latitude, double longitude) {
         String url = Utility.BASE_URL + "lat=" + latitude + "&lon=" + longitude + Utility.APPID + Utility.UNITS;
         if (mSettingsTempValue.equals(getString(R.string.settings_temp_celsius_value))) {
             url = url.concat(METRIC_UNITS);
@@ -202,9 +194,7 @@ public class HomeActivity extends AppCompatActivity
                     @Override
                     public void onResponse(String response) {
                         Log.d("onResponse", "onResponse: " + response);
-                        if (response != null) {
-                            onLocationResponse(response);
-                        }
+                        onLatLonLocationResponse(response);
                     }
                 },
                 new Response.ErrorListener() {
@@ -221,7 +211,7 @@ public class HomeActivity extends AppCompatActivity
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        onLocationResponse(response);
+                        mWeatherForecastModel = JsonHelper.GetWeatherForecastModel(response);
                         mHomeAdapter.UpdateData(mWeatherForecastModel.getList(), mSettingsTempValue);
                     }
                 }, new Response.ErrorListener() {
@@ -265,8 +255,7 @@ public class HomeActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         if (isDeviceOnline()) {
-//            checkLocation();
-            requestForForecastData();
+            checkLocation();
         } else {
             ShowNoNetworkDialog();
         }
@@ -402,11 +391,12 @@ public class HomeActivity extends AppCompatActivity
         }
     }
 
-    private void onLocationResponse(String response) {
+    private void onLatLonLocationResponse(String response) {
         mProgressBar.setVisibility(View.GONE);
         mPresentDataLayout.setVisibility(View.VISIBLE);
-        mWeatherForecastModel = JsonHelper.GetWeatherForecastModel(response);
-        long dateInMillis = mWeatherForecastModel.getList().get(0).getDate();
+
+        LatLonModel latLonModel = JsonHelper.GetLatLonModel(response);
+        long dateInMillis = latLonModel.getDate() * 1000;
         Date date = new Date(dateInMillis);
         SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
         String dateString = "Today\n" + format.format(date);
@@ -417,16 +407,23 @@ public class HomeActivity extends AppCompatActivity
         } else {
             tempUnit = "\u2109";
         }
-        String maxTemp = String.valueOf(mWeatherForecastModel.getList().get(0).getTemperature().getMax()).concat(tempUnit);
+        String maxTemp = String.valueOf(latLonModel.getMain().getTempMax()).concat(tempUnit);
         mMaxTemp.setText(maxTemp);
-        String minTemp = String.valueOf(mWeatherForecastModel.getList().get(0).getTemperature().getMin()).concat(tempUnit);
+        String minTemp = String.valueOf(latLonModel.getMain().getTempMin()).concat(tempUnit);
         mMinTemp.setText(minTemp);
-        mSkyStatus.setText(String.valueOf(mWeatherForecastModel.getList().get(0).getWeather().getDescription()));
-        String place = String.valueOf(mWeatherForecastModel.getCity().getName()).concat("," + mWeatherForecastModel.getCity().getCountry());
+        mSkyStatus.setText(String.valueOf(latLonModel.getWeather().getDescription()));
+        String place = String.valueOf(latLonModel.getName());
         mPlace.setText(place);
 
-        int imageResourceId = Utility.getWeatherConditionResourceId(mWeatherForecastModel.getList().get(0).getWeather().getId());
+        int imageResourceId = Utility.getWeatherConditionResourceId(latLonModel.getWeather().getId());
         mIcon.setImageResource(imageResourceId);
+
+        mPlaceSearched = latLonModel.getName();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(getString(R.string.settings_place), latLonModel.getName());
+        editor.apply();
+        requestForForecastData();
     }
 
     @Override
