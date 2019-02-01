@@ -37,9 +37,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.greddy.weatherapp.R;
-import com.example.greddy.weatherapp.model.WeatherModel;
-import com.example.greddy.weatherapp.parser.WeatherJsonParser;
+import com.example.greddy.weatherapp.model.forecast.WeatherForecastModel;
 import com.example.greddy.weatherapp.ui.settings.SettingsActivity;
+import com.example.greddy.weatherapp.utils.JsonHelper;
 import com.example.greddy.weatherapp.utils.Utility;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -91,7 +91,7 @@ public class HomeActivity extends AppCompatActivity
 
     private RequestQueue mRequestQueue;
 
-    private WeatherModel mWeatherModel;
+    private WeatherForecastModel mWeatherForecastModel;
     private String mSettingsTempValue;
     private String mPlaceSearched;
 
@@ -102,8 +102,8 @@ public class HomeActivity extends AppCompatActivity
         mRequestQueue = Volley.newRequestQueue(this);
         setUpSettingsPreferences();
         loadUi();
-        buildGoogleApiClient();
-        mGoogleApiClient.connect();
+//        buildGoogleApiClient();
+//        mGoogleApiClient.connect();
         if (isDeviceOnline()) {
 //            checkLocation();
             requestForForecastData();
@@ -221,9 +221,8 @@ public class HomeActivity extends AppCompatActivity
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        mWeatherModel = WeatherJsonParser.parseForecastData(response);
                         onLocationResponse(response);
-                        mHomeAdapter.UpdateData(mWeatherModel, mSettingsTempValue);
+                        mHomeAdapter.UpdateData(mWeatherForecastModel.getList(), mSettingsTempValue);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -404,10 +403,11 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void onLocationResponse(String response) {
-//        mWeatherModel = WeatherLatLonParser.parseLatLonFeed(response);
         mProgressBar.setVisibility(View.GONE);
         mPresentDataLayout.setVisibility(View.VISIBLE);
-        Date date = new Date(Integer.parseInt(mWeatherModel.getCity().getDateList().get(0)) * 1000L);
+        mWeatherForecastModel = JsonHelper.GetWeatherForecastModel(response);
+        long dateInMillis = mWeatherForecastModel.getList().get(0).getDate();
+        Date date = new Date(dateInMillis);
         SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
         String dateString = "Today\n" + format.format(date);
         mDate.setText(dateString);
@@ -417,15 +417,15 @@ public class HomeActivity extends AppCompatActivity
         } else {
             tempUnit = "\u2109";
         }
-        String maxTemp = String.valueOf(mWeatherModel.getWeatherList().get(0).getTemp_max()).concat(tempUnit);
+        String maxTemp = String.valueOf(mWeatherForecastModel.getList().get(0).getTemperature().getMax()).concat(tempUnit);
         mMaxTemp.setText(maxTemp);
-        String minTemp = String.valueOf(mWeatherModel.getWeatherList().get(0).getTemp_min()).concat(tempUnit);
+        String minTemp = String.valueOf(mWeatherForecastModel.getList().get(0).getTemperature().getMin()).concat(tempUnit);
         mMinTemp.setText(minTemp);
-        mSkyStatus.setText(String.valueOf(mWeatherModel.getWeatherList().get(0).getDescriptionList().get(0)));
-        String place = String.valueOf(mWeatherModel.getCity().getCityName()).concat("," + mWeatherModel.getCity().getCountry());
+        mSkyStatus.setText(String.valueOf(mWeatherForecastModel.getList().get(0).getWeather().getDescription()));
+        String place = String.valueOf(mWeatherForecastModel.getCity().getName()).concat("," + mWeatherForecastModel.getCity().getCountry());
         mPlace.setText(place);
 
-        int imageResourceId = Utility.getWeatherConditionResourceId(mWeatherModel.getWeatherList().get(0).getWeatherId());
+        int imageResourceId = Utility.getWeatherConditionResourceId(mWeatherForecastModel.getList().get(0).getWeather().getId());
         mIcon.setImageResource(imageResourceId);
     }
 
@@ -443,7 +443,6 @@ public class HomeActivity extends AppCompatActivity
         mSkyStatus = null;
         mIcon = null;
         mRequestQueue = null;
-        mWeatherModel = null;
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
     }
 }

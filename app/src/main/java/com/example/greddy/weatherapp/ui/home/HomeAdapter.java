@@ -1,7 +1,7 @@
 package com.example.greddy.weatherapp.ui.home;
 
 import android.content.Context;
-import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.greddy.weatherapp.R;
-import com.example.greddy.weatherapp.model.Weather;
-import com.example.greddy.weatherapp.model.WeatherModel;
+import com.example.greddy.weatherapp.model.forecast.WeatherForecastDayModel;
 import com.example.greddy.weatherapp.utils.Utility;
 
 import java.text.SimpleDateFormat;
@@ -29,8 +28,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
     public static String WEATHER_MODEL = "WEATHER_MODEL";
 
     private Context mContext;
-    private WeatherModel mWeatherModel;
-    private List<Weather> mWeatherList;
+    private List<WeatherForecastDayModel> mWeatherList;
     private String mSettingsTempValue;
     private int mPosition;
 
@@ -38,15 +36,15 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
         mContext = context;
     }
 
-    public void UpdateData(WeatherModel weatherModel, String mSettingsTempValue) {
-        mWeatherModel = weatherModel;
-        this.mWeatherList = weatherModel.getWeatherList();
+    public void UpdateData(List<WeatherForecastDayModel> weatherModel, String mSettingsTempValue) {
+        this.mWeatherList = weatherModel;
         this.mSettingsTempValue = mSettingsTempValue;
         notifyDataSetChanged();
     }
 
+    @NonNull
     @Override
-    public HomeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public HomeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.home_activity_recycler_item_view, parent, false);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,12 +58,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
     }
 
     @Override
-    public void onBindViewHolder(HomeViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull HomeViewHolder holder, int position) {
         mPosition = position + 1;
-        if (mPosition > getItemCount()){
+        if (mPosition > getItemCount()) {
             return;
         }
-        Date date = new Date(Integer.parseInt(mWeatherModel.getCity().getDateList().get(mPosition)) * 1000L);
+        Date date = new Date(mWeatherList.get(mPosition).getDate());
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String dateString = format.format(date);
         holder.mDate.setText(dateString);
@@ -75,13 +73,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
         } else {
             tempUnit = "\u2109";
         }
-        String maxTemp = String.valueOf(mWeatherList.get(mPosition).getTemp_max()).concat(tempUnit);
+        String maxTemp = String.valueOf(mWeatherList.get(mPosition).getTemperature().getMax()).concat(tempUnit);
         holder.mMaxTemp.setText(maxTemp);
-        String minTemp = String.valueOf(mWeatherList.get(mPosition).getTemp_min()).concat(tempUnit);
+        String minTemp = String.valueOf(mWeatherList.get(mPosition).getTemperature().getMin()).concat(tempUnit);
         holder.mMinTemp.setText(minTemp);
-        holder.mSky.setText(mWeatherList.get(mPosition).getDescriptionList().get(0));
+        holder.mSky.setText(mWeatherList.get(mPosition).getWeather().getDescription());
 
-        int imageResourceId = Utility.getWeatherConditionResourceId(mWeatherList.get(mPosition).getWeatherId());
+        int imageResourceId = Utility.getWeatherConditionResourceId(mWeatherList.get(mPosition).getWeather().getId());
         holder.mIcon.setImageResource(imageResourceId);
     }
 
