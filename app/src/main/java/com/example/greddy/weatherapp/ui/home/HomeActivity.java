@@ -37,7 +37,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.greddy.weatherapp.R;
-import com.example.greddy.weatherapp.db.WeatherDatabase;
 import com.example.greddy.weatherapp.model.WeatherModel;
 import com.example.greddy.weatherapp.parser.WeatherJsonParser;
 import com.example.greddy.weatherapp.ui.settings.SettingsActivity;
@@ -93,7 +92,6 @@ public class HomeActivity extends AppCompatActivity
     private RequestQueue mRequestQueue;
 
     private WeatherModel mWeatherModel;
-    private WeatherDatabase mWeatherDatabase;
     private String mSettingsTempValue;
     private String mPlaceSearched;
 
@@ -112,7 +110,6 @@ public class HomeActivity extends AppCompatActivity
         } else {
             ShowNoNetworkDialog();
         }
-        mWeatherDatabase = new WeatherDatabase(this);
     }
 
     private void setUpSettingsPreferences() {
@@ -430,15 +427,6 @@ public class HomeActivity extends AppCompatActivity
 
         int imageResourceId = Utility.getWeatherConditionResourceId(mWeatherModel.getWeatherList().get(0).getWeatherId());
         mIcon.setImageResource(imageResourceId);
-
-        mWeatherDatabase = new WeatherDatabase(this);
-        long rowCount = mWeatherDatabase.getCityCount();
-        Log.d(TAG, "onLocationResponse: Row count" + rowCount);
-        if (mWeatherDatabase.getCityCount() > 0) {
-            mWeatherDatabase.deleteCityData();
-        }
-        mWeatherDatabase.insertCity(mWeatherModel.getCity());
-        Log.d(TAG, "onLocationResponse: Row count" + mWeatherDatabase.getCityCount());
     }
 
     @Override
@@ -456,7 +444,6 @@ public class HomeActivity extends AppCompatActivity
         mIcon = null;
         mRequestQueue = null;
         mWeatherModel = null;
-        mWeatherDatabase = null;
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
     }
 }

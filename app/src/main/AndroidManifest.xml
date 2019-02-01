@@ -15,9 +15,6 @@
         android:theme="@style/WeatherTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".ui.splash.SplashActivity"
-            android:theme="@style/WeatherTheme.FullScreen" />
-        <activity
             android:name=".ui.home.HomeActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask"
