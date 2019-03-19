@@ -9,10 +9,10 @@
         android:id="@+id/home_details_activity_date"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/global_default_dimen_10px"
+        android:layout_margin="10dp"
         android:text="@string/app_name"
         android:textColor="@android:color/black"
-        android:textSize="@dimen/global_default_text_25px"
+        android:textSize="25sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,10 +21,10 @@
         android:id="@+id/home_details_activity_temp_max"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/global_default_dimen_10px"
+        android:layout_margin="10dp"
         android:text="@string/app_name"
         android:textColor="@android:color/black"
-        android:textSize="@dimen/global_default_text_41px"
+        android:textSize="41sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/home_details_activity_date" />
 
@@ -32,21 +32,21 @@
         android:id="@+id/home_details_activity_temp_min"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/global_default_dimen_10px"
+        android:layout_margin="10dp"
         android:text="@string/app_name"
         android:textColor="@android:color/black"
-        android:textSize="@dimen/global_default_text_30px"
+        android:textSize="30sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/home_details_activity_sky_status"
         app:layout_constraintLeft_toLeftOf="parent" />
 
 
     <ImageView
         android:id="@+id/home_details_activity_image_view"
-        android:layout_width="@dimen/global_default_dimen_180px"
-        android:layout_height="@dimen/global_default_dimen_180px"
-        android:layout_marginEnd="@dimen/global_default_dimen_10px"
-        android:layout_marginLeft="@dimen/global_default_dimen_10px"
-        android:layout_marginStart="@dimen/global_default_dimen_10px"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:contentDescription="@string/image_description"
         android:scaleType="fitXY"
         android:src="@drawable/sun"
@@ -57,11 +57,11 @@
         android:id="@+id/home_details_activity_sky_status"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/global_default_dimen_10px"
+        android:layout_margin="10dp"
         android:gravity="center"
         android:text="@string/app_name"
         android:textColor="@android:color/black"
-        android:textSize="@dimen/global_default_text_25px"
+        android:textSize="25sp"
         app:layout_constraintLeft_toLeftOf="@+id/home_details_activity_image_view"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/home_details_activity_image_view" />
@@ -70,11 +70,11 @@
         android:id="@+id/home_details_activity_humidity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/global_default_dimen_10px"
+        android:layout_margin="10dp"
         android:gravity="left|start"
         android:text="@string/app_name"
         android:textColor="@android:color/black"
-        android:textSize="@dimen/global_default_text_30px"
+        android:textSize="30sp"
         tools:layout_editor_absoluteX="10dp"
         tools:layout_editor_absoluteY="281dp" />
 
@@ -82,10 +82,10 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/global_default_dimen_10px"
+        android:layout_margin="10dp"
         android:text="TextView"
         android:textColor="@android:color/black"
-        android:textSize="@dimen/global_default_text_30px"
+        android:textSize="30sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/home_details_activity_humidity" />
 
