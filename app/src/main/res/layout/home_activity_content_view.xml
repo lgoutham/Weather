@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/home_activity_content_coordinatorLayout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/home_activity_content_coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -42,16 +42,16 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginStart="15dp"
-                    android:layout_weight="0.5">
+                    android:layout_weight="0.6">
 
                     <TextView
                         android:id="@+id/home_activity_date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/app_name"
                         android:layout_marginTop="5dp"
-                        android:textColor="@android:color/white"
-                        android:textSize="25sp" />
+                        android:text="@string/app_name"
+                        android:textColor="@color/colorDarkBgText"
+                        android:textSize="22sp" />
 
                     <TextView
                         android:id="@+id/home_activity_temp_max"
@@ -59,8 +59,8 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="@string/app_name"
-                        android:textColor="@android:color/white"
-                        android:textSize="40sp" />
+                        android:textColor="@color/colorDarkBgText"
+                        android:textSize="35sp" />
 
                     <TextView
                         android:id="@+id/home_activity_temp_min"
@@ -70,8 +70,8 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
                         android:text="@string/app_name"
-                        android:textColor="@android:color/white"
-                        android:textSize="30sp" />
+                        android:textColor="@color/colorDarkBgText"
+                        android:textSize="25sp" />
 
                     <TextView
                         android:id="@+id/home_activity_place"
@@ -79,10 +79,10 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
+                        android:layout_marginBottom="10dp"
                         android:text="@string/app_name"
-                        android:textColor="@android:color/white"
-                        android:textSize="25sp" />
+                        android:textColor="@color/colorDarkBgText"
+                        android:textSize="20sp" />
 
                 </RelativeLayout>
 
@@ -91,15 +91,16 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
-                    android:layout_weight="0.5">
+                    android:layout_weight="0.4">
 
                     <ImageView
                         android:id="@+id/home_activity_image_view"
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_alignParentEnd="true"
+                        android:layout_width="140dp"
+                        android:layout_height="140dp"
                         android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
                         android:contentDescription="@string/image_description"
                         android:scaleType="fitXY" />
 
@@ -107,14 +108,14 @@
                         android:id="@+id/home_activity_sky_status"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
                         android:layout_below="@id/home_activity_image_view"
+                        android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="5dp"
                         android:gravity="center"
                         android:text="@string/app_name"
-                        android:textColor="@android:color/white"
-                        android:textSize="25sp" />
+                        android:textColor="@color/colorDarkBgText"
+                        android:textSize="20sp" />
                 </RelativeLayout>
             </LinearLayout>
 

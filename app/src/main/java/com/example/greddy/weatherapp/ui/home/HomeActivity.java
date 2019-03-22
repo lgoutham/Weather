@@ -101,7 +101,6 @@ public class HomeActivity extends AppCompatActivity
         setUpSettingsPreferences();
         loadUi();
         buildGoogleApiClient();
-        mGoogleApiClient.connect();
     }
 
     private void setUpSettingsPreferences() {
@@ -145,6 +144,12 @@ public class HomeActivity extends AppCompatActivity
                 .build();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
     private boolean isDeviceOnline() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -163,10 +168,9 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void checkLocation() {
-        boolean isGpsEnabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        if (!isGpsEnabled)
-            ShowGpsDialog();
-        else
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestLocationPermissions();
+        } else
             prepareUrlAndRequestData();
     }
 
@@ -302,12 +306,13 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        Log.d(TAG, String.valueOf(i));
+        mGoogleApiClient.connect();
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        Log.d(TAG, connectionResult.toString());
     }
 
     @Override
@@ -349,31 +354,6 @@ public class HomeActivity extends AppCompatActivity
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(android.provider.Settings.ACTION_SETTINGS);
                         startActivityForResult(intent, SETTINGS_REQUEST_CODE);
-                        mDialog.dismiss();
-                    }
-                })
-                .setCancelable(false);
-        mDialog = alertDialogBuilder.create();
-        mDialog.show();
-    }
-
-    private void ShowGpsDialog() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle(getResources().getString(R.string.no_gps_title));
-        alertDialogBuilder.setMessage(getResources().getString(R.string.permission_location_rationale))
-                .setNegativeButton(getResources().getString(R.string.lbl_Cancel), new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mDialog.dismiss();
-                    }
-                })
-                .setPositiveButton(getResources().getString(R.string.lbl_Enable_Gps), new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        startActivity(intent);
                         mDialog.dismiss();
                     }
                 })
