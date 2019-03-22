@@ -44,6 +44,10 @@ import com.example.greddy.weatherapp.utils.JsonHelper;
 import com.example.greddy.weatherapp.utils.Utility;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
 import java.text.SimpleDateFormat;
@@ -72,6 +76,7 @@ public class HomeActivity extends AppCompatActivity
     private LocationManager mLocationManager;
     private GoogleApiClient mGoogleApiClient;
     private Location mPresentLocation;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
 
     private AlertDialog mDialog;
     private RelativeLayout mProgressBar;
@@ -168,9 +173,10 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void checkLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestLocationPermissions();
-        } else
+        boolean isGpsEnabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if (!isGpsEnabled)
+            ShowGpsDialog();
+        else
             prepareUrlAndRequestData();
     }
 
@@ -299,10 +305,27 @@ public class HomeActivity extends AppCompatActivity
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestLocationPermissions();
         } else {
-            mPresentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            prepareUrlAndRequestData();
+            mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+            LocationRequest locationRequest = LocationRequest.create();
+            locationRequest.setInterval(500);
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            locationRequest.setFastestInterval(500);
+            mFusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
         }
     }
+
+    LocationCallback locationCallback = new LocationCallback() {
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+            super.onLocationResult(locationResult);
+            Log.d(TAG, locationResult.toString());
+            if (locationResult.getLocations().size() > 0) {
+                mPresentLocation = locationResult.getLastLocation();
+                prepareUrlAndRequestData();
+                mFusedLocationProviderClient.removeLocationUpdates(locationCallback);
+            }
+        }
+    };
 
     @Override
     public void onConnectionSuspended(int i) {
@@ -319,12 +342,9 @@ public class HomeActivity extends AppCompatActivity
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Snackbar.make(mLayout, R.string.location_permision_available,
-                        Snackbar.LENGTH_SHORT).show();
                 prepareUrlAndRequestData();
             } else {
-                Snackbar.make(mLayout, R.string.permissions_not_granted,
-                        Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(mLayout, R.string.permissions_not_granted, Snackbar.LENGTH_SHORT).show();
             }
         }
     }
@@ -354,6 +374,31 @@ public class HomeActivity extends AppCompatActivity
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(android.provider.Settings.ACTION_SETTINGS);
                         startActivityForResult(intent, SETTINGS_REQUEST_CODE);
+                        mDialog.dismiss();
+                    }
+                })
+                .setCancelable(false);
+        mDialog = alertDialogBuilder.create();
+        mDialog.show();
+    }
+
+    private void ShowGpsDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle(getResources().getString(R.string.no_gps_title));
+        alertDialogBuilder.setMessage(getResources().getString(R.string.permission_location_rationale))
+                .setNegativeButton(getResources().getString(R.string.lbl_Cancel), new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mDialog.dismiss();
+                    }
+                })
+                .setPositiveButton(getResources().getString(R.string.lbl_Enable_Gps), new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(intent);
                         mDialog.dismiss();
                     }
                 })
